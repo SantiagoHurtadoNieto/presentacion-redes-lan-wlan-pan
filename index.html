@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes LAN, WLAN y Tecnologías PAN — Presentación Académica</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme">
+    <style>
+        /* ===== TOKENS ===== */
+        :root {
+            --c-navy: #0d1b2a;
+            --c-blue: #1b3a5c;
+            --c-accent: #2196F3;
+            --c-accent-light: #64B5F6;
+            --c-teal: #00897B;
+            --c-surface: #f4f6f8;
+            --c-white: #ffffff;
+            --c-text: #1a1a2e;
+            --c-muted: #5a6a7a;
+            --c-border: #d0d7de;
+            --c-highlight: #FFF9C4;
+            --font-body: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+        }
+
+        /* ===== GLOBAL ===== */
+        .reveal {
+            font-family: var(--font-body);
+            font-size: 28px;
+            color: var(--c-text);
+        }
+        .reveal .slides { text-align: left; }
+        .reveal .slides section { padding: 40px 60px; }
+
+        /* ===== HEADINGS ===== */
+        .reveal h1 { font-size: 2.4em; font-weight: 700; color: var(--c-navy); line-height: 1.15; margin-bottom: 0.3em; text-align: center; }
+        .reveal h2 { font-size: 1.55em; font-weight: 700; color: var(--c-blue); line-height: 1.2; margin-bottom: 0.5em; border-bottom: 3px solid var(--c-accent); padding-bottom: 0.2em; }
+        .reveal h3 { font-size: 1.2em; font-weight: 600; color: var(--c-teal); margin-bottom: 0.3em; }
+
+        /* ===== LISTS ===== */
+        .reveal ul, .reveal ol { font-size: 0.92em; line-height: 1.65; margin-left: 0.6em; }
+        .reveal li { margin-bottom: 0.35em; }
+        .reveal li::marker { color: var(--c-accent); }
+
+        /* ===== IMAGES ===== */
+        .reveal img.fig {
+            display: block;
+            max-width: 90%;
+            max-height: 55vh;
+            margin: 0.6em auto;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+        }
+        .reveal img.fig-lg {
+            max-height: 65vh;
+            max-width: 95%;
+        }
+        .reveal img.fig-sm {
+            max-height: 40vh;
+            max-width: 70%;
+        }
+
+        /* ===== CAPTION ===== */
+        .caption {
+            text-align: center;
+            font-size: 0.72em;
+            color: var(--c-muted);
+            margin-top: 0.3em;
+            font-style: italic;
+        }
+
+        /* ===== TABLES ===== */
+        .reveal table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78em;
+            line-height: 1.45;
+            margin: 0.6em 0;
+        }
+        .reveal table th {
+            background: var(--c-blue);
+            color: var(--c-white);
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid var(--c-blue);
+        }
+        .reveal table td {
+            padding: 8px 12px;
+            border: 1px solid var(--c-border);
+            vertical-align: top;
+        }
+        .reveal table tr:nth-child(even) { background: var(--c-surface); }
+        .reveal table.compact { font-size: 0.72em; }
+        .reveal table.compact td,
+        .reveal table.compact th { padding: 7px 10px; }
+        .reveal table.compact td { padding: 6px 10px; }
+
+        /* ===== COVER SLIDE ===== */
+        .cover { text-align: center !important; }
+        .cover h1 { font-size: 2.0em; margin-top: 0.5em; }
+        .cover .subtitle { font-size: 1.05em; color: var(--c-muted); margin-top: 0.3em; }
+        .cover .authors { font-size: 0.88em; color: var(--c-blue); margin-top: 1em; font-weight: 600; }
+        .cover .institution { font-size: 0.72em; color: var(--c-muted); margin-top: 0.4em; line-height: 1.5; }
+        .cover .bar { width: 120px; height: 4px; background: var(--c-accent); margin: 0.8em auto; border-radius: 2px; }
+
+        /* ===== SECTION DIVIDER ===== */
+        .section-divider {
+            text-align: center !important;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .section-divider h2 {
+            font-size: 1.8em;
+            border: none;
+            color: var(--c-navy);
+            padding-bottom: 0;
+        }
+        .section-divider .section-num {
+            font-size: 3.5em;
+            font-weight: 800;
+            color: var(--c-accent-light);
+            opacity: 0.35;
+            line-height: 1;
+            margin-bottom: -0.15em;
+        }
+
+        /* ===== TWO-COLUMN ===== */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+        .two-col-60-40 { display: grid; grid-template-columns: 3fr 2fr; gap: 30px; align-items: center; }
+        .two-col-40-60 { display: grid; grid-template-columns: 2fr 3fr; gap: 30px; align-items: center; }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .box {
+            background: var(--c-surface);
+            border-left: 4px solid var(--c-accent);
+            padding: 14px 18px;
+            border-radius: 0 6px 6px 0;
+            margin: 0.5em 0;
+            font-size: 0.88em;
+        }
+        .box-teal {
+            border-left-color: var(--c-teal);
+        }
+
+        /* ===== TAGS ===== */
+        .tag {
+            display: inline-block;
+            background: var(--c-accent);
+            color: var(--c-white);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.72em;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+        .tag-teal { background: var(--c-teal); }
+
+        /* ===== PROGRESS BAR COLOR ===== */
+        .reveal .progress span { background: var(--c-accent); }
+
+        /* ===== END SLIDE ===== */
+        .end-slide { text-align: center !important; }
+        .end-slide h2 { border: none; font-size: 2em; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .two-col, .two-col-60-40, .two-col-40-60 { grid-template-columns: 1fr; }
+            .reveal .slides section { padding: 20px 30px; }
+        }
+    </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ============================== -->
+<!-- SLIDE 1: PORTADA               -->
+<!-- ============================== -->
+<section class="cover" data-transition="fade">
+    <div class="bar"></div>
+    <h1>Redes LAN, WLAN y<br>Tecnologías PAN</h1>
+    <p class="subtitle">Investigación académica sobre fundamentos, arquitecturas<br>y parámetros de desempeño</p>
+    <div class="bar"></div>
+    <p class="authors">Santiago Hurtado &middot; Camila Puin &middot; Daniel Espitia</p>
+    <p class="institution">Universidad Pedagógica y Tecnológica de Colombia<br>
+    Facultad de Ingeniería &mdash; Escuela de Ingeniería de Sistemas y Computación<br>
+    Asignatura: Comunicaciones &middot; 2026</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 2: AGENDA / RUTA         -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Ruta de la presentación</h2>
+    <div class="two-col">
+        <div>
+            <ol>
+                <li><strong>Contextualización</strong> — qué son LAN, WLAN y PAN</li>
+                <li><strong>Fundamentos técnicos</strong> — medios, multiplexación, acceso al medio</li>
+                <li><strong>Arquitectura y protocolos</strong> — componentes, topologías, tramas</li>
+            </ol>
+        </div>
+        <div>
+            <ol start="4">
+                <li><strong>Parámetros de desempeño</strong> — velocidad, alcance, latencia, seguridad</li>
+                <li><strong>Aplicaciones y escenarios</strong> — cuadro comparativo y decisión técnica</li>
+                <li><strong>Tendencias</strong> — Ethernet Terabit, Wi-Fi 7, BLE 6.0, Matter</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 3: SECCIÓN 1 DIVIDER     -->
+<!-- ============================== -->
+<section class="section-divider" data-transition="zoom">
+    <div class="section-num">01</div>
+    <h2>Contextualización</h2>
+    <p style="color:var(--c-muted); font-size:0.85em;">Clasificación de redes por alcance geográfico</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 4: CLASIFICACIÓN DE REDES -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Las redes se clasifican por su alcance geográfico</h2>
+    <div class="two-col-40-60">
+        <div>
+            <img src="assets/img_p11_1.png" class="fig" alt="Clasificación PAN, LAN, MAN, WAN" style="max-height:45vh;">
+            <p class="caption">Figura 6. Clasificación por alcance geográfico</p>
+        </div>
+        <div>
+            <ul>
+                <li><strong>PAN</strong> — 1 a 10 m (Bluetooth, Zigbee)</li>
+                <li><strong>LAN</strong> — 10 m a 1 km (Ethernet, Wi-Fi)</li>
+                <li><strong>MAN</strong> — hasta 10 km (fibra, microondas)</li>
+                <li><strong>WAN</strong> — regional a global (satélite, fibra submarina)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 5: NECESIDAD DE CADA TEC -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Cada tecnología resolvió un problema específico</h2>
+    <table>
+        <thead>
+            <tr><th>Tecnología</th><th>Década</th><th>Problema que resolvió</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Ethernet</strong> (IEEE 802.3)</td><td>1970s</td><td>Interconexión de estaciones fijas con alta velocidad y baja latencia</td></tr>
+            <tr><td><strong>Wi-Fi</strong> (IEEE 802.11)</td><td>1990s</td><td>Eliminar cableado rígido y costos, brindando movilidad</td></tr>
+            <tr><td><strong>Bluetooth</strong> (IEEE 802.15.1)</td><td>1990s</td><td>Reemplazar cables de periféricos con enlace de corto alcance y bajo costo</td></tr>
+            <tr><td><strong>Zigbee</strong> (IEEE 802.15.4)</td><td>2000s</td><td>Conectar cientos de sensores IoT con ultra bajo consumo y topología en malla</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 6: SECCIÓN 2 DIVIDER     -->
+<!-- ============================== -->
+<section class="section-divider" data-transition="zoom">
+    <div class="section-num">02</div>
+    <h2>Fundamentos Técnicos</h2>
+    <p style="color:var(--c-muted); font-size:0.85em;">Medios de transmisión, multiplexación y acceso al medio</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 7: MEDIOS GUIADOS vs NO  -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Medios guiados ofrecen mayor rendimiento; los no guiados, movilidad</h2>
+    <div class="two-col">
+        <div>
+            <h3>Medios guiados</h3>
+            <ul>
+                <li>Par trenzado (UTP/STP)</li>
+                <li>Fibra óptica (monomodo / multimodo)</li>
+                <li>Altas tasas, baja latencia, inmunidad a interferencias</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Medios no guiados</h3>
+            <ul>
+                <li>Radiofrecuencia: 2,4 GHz, 5 GHz, 6 GHz</li>
+                <li>Flexibilidad y movilidad</li>
+                <li>Sensibles a atenuación, desvanecimiento y contención espectral</li>
+            </ul>
+        </div>
+    </div>
+    <div class="box" style="margin-top:0.8em;">
+        <strong>Tabla 1 del documento:</strong> PAN usa inalámbrico; LAN combina cobre, fibra y RF; MAN/WAN escalan a fibra óptica y satélite.
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 8: MULTIPLEXACIÓN        -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Técnicas de multiplexación optimizan el uso del espectro</h2>
+    <table>
+        <thead>
+            <tr><th>Técnica</th><th>Uso principal</th><th>Descripción clave</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>OFDM</strong></td><td>WLAN (802.11a/g/n/ac)</td><td>Subportadoras ortogonales contra desvanecimiento multicamino</td></tr>
+            <tr><td><strong>OFDMA</strong></td><td>Wi-Fi 6/7</td><td>Asignación dinámica de subportadoras a múltiples usuarios</td></tr>
+            <tr><td><strong>FHSS</strong></td><td>Bluetooth</td><td>Salto rápido entre 79 canales de 1 MHz</td></tr>
+            <tr><td><strong>DSSS</strong></td><td>802.11b, Zigbee</td><td>Ensanchamiento con códigos pseudoaleatorios</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 9: CSMA/CD vs CSMA/CA   -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>CSMA/CD detecta colisiones; CSMA/CA las evita</h2>
+    <div class="two-col-40-60">
+        <div>
+            <ul>
+                <li><strong>CSMA/CD</strong> — Ethernet cableado semi-dúplex: detecta variaciones de voltaje y aplica backoff exponencial</li>
+                <li><strong>CSMA/CA</strong> — WLAN y Zigbee: escucha previa + temporizadores + tramas RTS/CTS</li>
+            </ul>
+        </div>
+        <div>
+            <img src="assets/img_p12_1.png" class="fig" alt="CSMA/CD vs CSMA/CA">
+            <p class="caption">Figura 7. Comparación CSMA/CD vs CSMA/CA (DataFlare)</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 10: CONMUTACIÓN          -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Los switches Ethernet emplean dos modalidades de reenvío</h2>
+    <div class="two-col">
+        <div>
+            <h3>Store-and-Forward</h3>
+            <ul>
+                <li>Recibe trama completa</li>
+                <li>Verifica CRC antes de reenviar</li>
+                <li>Mayor latencia, pero no propaga errores</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Cut-Through</h3>
+            <ul>
+                <li>Reenvía tras leer MAC destino</li>
+                <li>Latencia ultrabaja (&lt; 1 ms)</li>
+                <li>Puede transmitir tramas con errores</li>
+            </ul>
+        </div>
+    </div>
+    <div class="box box-teal" style="margin-top:0.8em;">
+        Se diferencian de la <strong>conmutación de circuitos</strong> (PSTN, canal dedicado) y <strong>conmutación por etiquetas</strong> (MPLS/ATM, celdas de 53 bytes).
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 11: SECCIÓN 3 DIVIDER    -->
+<!-- ============================== -->
+<section class="section-divider" data-transition="zoom">
+    <div class="section-num">03</div>
+    <h2>Arquitectura y Protocolos</h2>
+    <p style="color:var(--c-muted); font-size:0.85em;">Componentes, topologías, tramas y diseño</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 12: TRAMAS ETHERNET      -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>La trama Ethernet encapsula datos en campos estrictamente definidos</h2>
+    <img src="assets/img_p7_1.png" class="fig" alt="Tramas Ethernet estándar">
+    <p class="caption">Figura 1. Estructura comparativa de las tramas Ethernet estándar (IEEE 802.3)</p>
+    <img src="assets/img_p7_2.png" class="fig" alt="Detalle trama Ethernet IEEE 802.3" style="max-height: 35vh;">
+    <p class="caption">Figura 2. Detalle de campos y subcapas de la trama IEEE 802.3</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 13: TRAMAS Wi-Fi Y ZIGBEE-->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Las tramas inalámbricas adaptan su estructura a cada estándar</h2>
+    <div class="two-col">
+        <div>
+            <img src="assets/img_p8_1.png" class="fig" alt="Trama Wi-Fi IEEE 802.11" style="max-height:30vh;">
+            <p class="caption">Figura 3. Trama IEEE 802.11 (Wi-Fi) — hasta 4 campos de direccionamiento</p>
+        </div>
+        <div>
+            <img src="assets/img_p9_1.png" class="fig" alt="Trama Zigbee IEEE 802.15.4" style="max-height:30vh;">
+            <p class="caption">Figura 5. Trama de datos y capas PHY/MAC en IEEE 802.15.4 (Zigbee)</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 14: TOPOLOGÍAS           -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Cada tecnología adopta topologías distintas según su propósito</h2>
+    <img src="assets/img_p15_1.png" class="fig fig-lg" alt="Principales topologías de red">
+    <p class="caption">Figura 8. Principales topologías de red físicas y lógicas</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 15: TOPOLOGÍAS PAN       -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Bluetooth organiza piconets; Zigbee soporta malla autorreparable</h2>
+    <div class="two-col">
+        <div>
+            <img src="assets/img_p8_2.jpeg" class="fig" alt="Piconet y Scatternet Bluetooth" style="max-height:40vh;">
+            <p class="caption">Figura 4. Piconet (1 maestro + 7 esclavos) y Scatternet Bluetooth</p>
+        </div>
+        <div>
+            <img src="assets/img_p17_1.png" class="fig" alt="Topologías Zigbee" style="max-height:40vh;">
+            <p class="caption">Topologías Zigbee: Estrella, Árbol y Malla con roles ZC, ZR, ZED</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 16: ORGANISMOS / NORMAS  -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Tres organismos regulan la estandarización de estas tecnologías</h2>
+    <table class="compact">
+        <thead>
+            <tr><th>Organismo</th><th>Tecnología</th><th>Estándares clave</th><th>Alcance</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>IEEE 802.3 WG</strong></td>
+                <td>Ethernet</td>
+                <td>802.3, 802.3u/ab/ae, 802.3df-2024, P802.3dj</td>
+                <td>PHY, MAC, cobre/fibra hasta escala Terabit</td>
+            </tr>
+            <tr>
+                <td><strong>IEEE 802.11 WG</strong></td>
+                <td>WLAN / Wi-Fi</td>
+                <td>802.11a/b/g/n/ac, 802.11ax (Wi-Fi 6), 802.11be (Wi-Fi 7)</td>
+                <td>PHY y MAC en 2,4 / 5 / 6 GHz</td>
+            </tr>
+            <tr>
+                <td><strong>Bluetooth SIG</strong></td>
+                <td>Bluetooth</td>
+                <td>Core v2.1+EDR, v4.0 (BLE), v5.4, v6.0</td>
+                <td>Marca, perfiles, banda base, BLE, seguridad</td>
+            </tr>
+            <tr>
+                <td><strong>CSA + IEEE 802.15</strong></td>
+                <td>Zigbee</td>
+                <td>802.15.4 (PHY/MAC), Zigbee PRO, Zigbee 3.0, Matter</td>
+                <td>IEEE: capas 1-2; CSA: NWK, APS, seguridad</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="caption">Tabla 3. Organismos de estandarización, normas asignadas y alcance técnico</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 17: SECCIÓN 4 DIVIDER    -->
+<!-- ============================== -->
+<section class="section-divider" data-transition="zoom">
+    <div class="section-num">04</div>
+    <h2>Parámetros de Desempeño</h2>
+    <p style="color:var(--c-muted); font-size:0.85em;">Velocidad, alcance, latencia y seguridad</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 18: VELOCIDAD            -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>La velocidad varía en órdenes de magnitud entre tecnologías</h2>
+    <table>
+        <thead>
+            <tr><th>Tecnología</th><th>Velocidad nominal</th><th>Observación</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Ethernet</strong></td><td>10 Mbps → 800 Gbps</td><td>IEEE 802.3df-2024 para centros de datos</td></tr>
+            <tr><td><strong>Wi-Fi</strong></td><td>11 Mbps → 46 Gbps</td><td>Wi-Fi 7 con 320 MHz y 4096-QAM</td></tr>
+            <tr><td><strong>Bluetooth</strong></td><td>1–3 Mbps (Classic/BLE)</td><td>Prioriza bajo consumo sobre ancho de banda</td></tr>
+            <tr><td><strong>Zigbee</strong></td><td>250 kbps (2,4 GHz)</td><td>Optimizada para telemetría en ráfagas</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 19: ALCANCE Y LATENCIA   -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Ethernet domina en latencia; las PAN priorizan eficiencia energética</h2>
+    <div class="two-col">
+        <div>
+            <h3>Alcance</h3>
+            <ul>
+                <li><strong>Ethernet:</strong> 100 m (cobre), km (fibra)</li>
+                <li><strong>Wi-Fi:</strong> 30–100 m interior</li>
+                <li><strong>Bluetooth:</strong> ~10 m (Clase 2)</li>
+                <li><strong>Zigbee:</strong> 10–100 m (extensible en malla)</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Latencia</h3>
+            <ul>
+                <li><strong>Ethernet:</strong> &lt; 1 ms (cut-through)</li>
+                <li><strong>Wi-Fi:</strong> 1–30 ms (&lt; 10 ms en Wi-Fi 6/7)</li>
+                <li><strong>Bluetooth:</strong> 5–10 ms (Classic)</li>
+                <li><strong>Zigbee:</strong> 15–40 ms (incrementa por saltos)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 20: SEGURIDAD            -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Cada estándar implementa mecanismos de seguridad específicos</h2>
+    <table class="compact">
+        <thead>
+            <tr><th>Tecnología</th><th>Mecanismos de seguridad</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Ethernet</strong></td><td>VLANs (802.1Q), control de acceso 802.1X, MACsec</td></tr>
+            <tr><td><strong>Wi-Fi</strong></td><td>WPA2 / WPA3 (SAE, PMF, AES-CCMP, forward secrecy)</td></tr>
+            <tr><td><strong>Bluetooth</strong></td><td>LE Secure Connections (ECDH P-256), salto adaptativo AFH</td></tr>
+            <tr><td><strong>Zigbee</strong></td><td>AES-128 CCM*, install codes, Trust Center, claves jerárquicas</td></tr>
+        </tbody>
+    </table>
+    <div class="box" style="margin-top:0.6em;">
+        <strong>Zigbee 3.0</strong> resuelve la vulnerabilidad de la clave de enlace por defecto mediante <em>install codes</em> únicos por dispositivo.
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 21: BLUETOOTH CLASSIC vs BLE -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Bluetooth Classic y BLE sirven propósitos complementarios</h2>
+    <table>
+        <thead>
+            <tr><th>Parámetro</th><th>Bluetooth Classic</th><th>BLE</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Estándar</td><td>IEEE 802.15.1 / Core v2.1+EDR</td><td>Core 4.0+ / v5.x / v6.0</td></tr>
+            <tr><td>Propósito</td><td>Audio y datos continuos</td><td>Ráfagas cortas, ultra bajo consumo</td></tr>
+            <tr><td>Canales RF</td><td>79 canales de 1 MHz</td><td>40 canales de 2 MHz</td></tr>
+            <tr><td>Consumo</td><td>Moderado (recarga frecuente)</td><td>Meses/años con pila de botón</td></tr>
+            <tr><td>Casos de uso</td><td>Auriculares, altavoces, periféricos</td><td>Monitores de salud, sensores IoT</td></tr>
+        </tbody>
+    </table>
+    <p class="caption">Tabla 4. Comparativa Bluetooth Classic vs BLE (Forouzan [1], Bluetooth SIG [6])</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 22: SECCIÓN 5 DIVIDER    -->
+<!-- ============================== -->
+<section class="section-divider" data-transition="zoom">
+    <div class="section-num">05</div>
+    <h2>Aplicaciones y Escenarios</h2>
+    <p style="color:var(--c-muted); font-size:0.85em;">Coexistencia en 2,4 GHz y selección de tecnología</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 23: COEXISTENCIA 2,4 GHz -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Wi-Fi, Bluetooth y Zigbee coexisten en la banda saturada de 2,4 GHz</h2>
+    <ul>
+        <li><strong>Bluetooth AFH:</strong> excluye canales con contención Wi-Fi del mapa de saltos</li>
+        <li><strong>Zigbee:</strong> selecciona canales ortogonales (15, 20, 25, 26) en los vacíos entre canales Wi-Fi</li>
+        <li><strong>Gateway híbrido:</strong> traduce tramas PAN a paquetes IP sobre Ethernet/Wi-Fi</li>
+    </ul>
+    <img src="assets/img_p28_1.png" class="fig" alt="Arquitectura híbrida interoperable" style="max-height:36vh;">
+    <p class="caption">Figura 11. Esquema de arquitectura de red híbrida e interoperable</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 24: PICONET / SCATTERNET -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Las piconets Bluetooth se interconectan formando scatternets</h2>
+    <img src="assets/img_p23_1.png" class="fig" alt="Piconet y Scatternet Bluetooth">
+    <p class="caption">Figura 10. Arquitectura de Piconet y Scatternet en redes Bluetooth</p>
+    <div class="box">
+        Un nodo <strong>bridge</strong> participa en dos piconets simultáneamente, alternando roles maestro/esclavo mediante TDMA/FHSS.
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 25: MATRIZ DE DECISIÓN   -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>La selección de tecnología depende del escenario de aplicación</h2>
+    <table class="compact">
+        <thead>
+            <tr><th>Escenario</th><th>Requerimiento crítico</th><th>Tecnología</th><th>Justificación</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Servidor de BD corporativo</td><td>Ancho de banda extremo, latencia nula</td><td>Ethernet (10G+ / Fibra)</td><td>Capacidad dedicada sin interferencias RF</td></tr>
+            <tr><td>Campus universitario</td><td>Movilidad, densidad media/alta</td><td>Wi-Fi 5 / Wi-Fi 6</td><td>Infraestructura flexible sin cablear nodos</td></tr>
+            <tr><td>Auriculares inalámbricos</td><td>Bajo consumo, enlace punto a punto</td><td>Bluetooth Classic / BLE</td><td>Diseñado para PAN y perfiles de audio</td></tr>
+            <tr><td>200 sensores en fábrica</td><td>Años de batería, malla extensa</td><td>Zigbee (802.15.4)</td><td>Ultra bajo consumo + malla self-healing</td></tr>
+        </tbody>
+    </table>
+    <p class="caption">Tabla 6. Matriz de decisión técnica para selección de tecnologías</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 26: SECCIÓN 6 DIVIDER    -->
+<!-- ============================== -->
+<section class="section-divider" data-transition="zoom">
+    <div class="section-num">06</div>
+    <h2>Tendencias y Evolución</h2>
+    <p style="color:var(--c-muted); font-size:0.85em;">Ethernet Terabit, Wi-Fi 7, BLE 6.0 y Matter</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 27: TENDENCIAS           -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Todas las tecnologías evolucionan hacia mayor rendimiento e integración</h2>
+    <div class="two-col">
+        <div>
+            <h3>Ethernet</h3>
+            <ul>
+                <li>802.3df-2024: 400G/800G ratificado</li>
+                <li>P802.3dj: camino a 1,6 Tbps</li>
+                <li>Modulación PAM4/PAM8 + DSP avanzado</li>
+            </ul>
+            <h3 style="margin-top:0.8em;">Wi-Fi 7</h3>
+            <ul>
+                <li>Banda de 6 GHz + canales de 320 MHz</li>
+                <li>4096-QAM (mayor densidad espectral)</li>
+                <li>MLO: agregación en 2,4 + 5 + 6 GHz</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Bluetooth</h3>
+            <ul>
+                <li>BLE 6.0: Channel Sounding para localización de alta precisión</li>
+                <li>Consumo energético mínimo mantenido</li>
+            </ul>
+            <h3 style="margin-top:0.8em;">Zigbee e IoT</h3>
+            <ul>
+                <li>Zigbee 3.0: AES-128 CCM* + install codes</li>
+                <li><strong>Matter:</strong> protocolo unificado de la CSA</li>
+                <li>Funciona sobre Thread (802.15.4) y Wi-Fi/Ethernet</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 28: CUADRO COMPARATIVO   -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Cuadro comparativo integral — LAN vs PAN</h2>
+    <table class="compact">
+        <thead>
+            <tr><th>Criterio</th><th>Ethernet</th><th>Wi-Fi</th><th>Bluetooth</th><th>Zigbee</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Estándar</strong></td><td>IEEE 802.3</td><td>IEEE 802.11</td><td>IEEE 802.15.1</td><td>IEEE 802.15.4</td></tr>
+            <tr><td><strong>Velocidad</strong></td><td>10M – 800G</td><td>11M – 46G</td><td>1–3 Mbps</td><td>250 kbps</td></tr>
+            <tr><td><strong>Alcance</strong></td><td>100m / km</td><td>30–100 m</td><td>~10 m</td><td>10–100 m (malla)</td></tr>
+            <tr><td><strong>Latencia</strong></td><td>&lt; 1 ms</td><td>1–30 ms</td><td>5–10 ms</td><td>15–40 ms</td></tr>
+            <tr><td><strong>Consumo</strong></td><td>Alto</td><td>Mod./Alto</td><td>Mod./Ultra bajo</td><td>Ultra bajo</td></tr>
+            <tr><td><strong>Acceso</strong></td><td>Full-Duplex</td><td>CSMA/CA</td><td>TDMA/FHSS</td><td>CSMA/CA</td></tr>
+            <tr><td><strong>Topología</strong></td><td>Estrella</td><td>BSS/ESS</td><td>Piconet/Mesh</td><td>Malla/Estrella</td></tr>
+            <tr><td><strong>Seguridad</strong></td><td>802.1X, MACsec</td><td>WPA3</td><td>ECDH P-256</td><td>AES-128 CCM*</td></tr>
+        </tbody>
+    </table>
+    <p class="caption">Tabla 5. Cuadro comparativo integral (Fuente: especificaciones IEEE [1]-[9])</p>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 29: CONCLUSIONES         -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Conclusiones</h2>
+    <ul>
+        <li><strong>Ethernet</strong> es el referente en rendimiento, estabilidad y capacidad para redes LAN cableadas</li>
+        <li><strong>WLAN</strong> extiende la flexibilidad de las LAN al ámbito inalámbrico con movilidad continua</li>
+        <li><strong>Bluetooth</strong> resuelve el enlace corto para periféricos y audio personal</li>
+        <li><strong>Zigbee</strong> ofrece una plataforma robusta, escalable y de bajo consumo para IoT y sensorización en malla</li>
+    </ul>
+    <div class="box box-teal" style="margin-top:0.6em;">
+        La selección de la infraestructura adecuada exige analizar el <strong>ancho de banda</strong>, la <strong>topología</strong>, la <strong>latencia</strong>, la <strong>densidad de dispositivos</strong> y las <strong>restricciones energéticas</strong> del proyecto.
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 30: REFERENCIAS          -->
+<!-- ============================== -->
+<section data-transition="slide">
+    <h2>Referencias bibliográficas</h2>
+    <ol style="font-size: 0.62em; line-height: 1.7; columns: 2; column-gap: 30px;">
+        <li>B. A. Forouzan, <em>Data Communications and Networking</em>, 5th ed., McGraw-Hill, 2013.</li>
+        <li>W. Stallings, <em>Data and Computer Communications</em>, 10th ed., Pearson, 2014.</li>
+        <li>A. S. Tanenbaum &amp; D. J. Wetherall, <em>Computer Networks</em>, 5th ed., Pearson, 2011.</li>
+        <li>IEEE, <em>IEEE Std 802.3df-2024</em> (400G/800G), Mar. 2024.</li>
+        <li>IEEE, <em>IEEE Std 802.11be-2024</em> (EHT / Wi-Fi 7), en desarrollo.</li>
+        <li>Bluetooth SIG, <em>Bluetooth Core Specification</em>, v5.4 / v6.0, 2024–2025.</li>
+        <li>CSA, <em>Zigbee Specification</em>, rev. 23 / Zigbee 3.0, 2023.</li>
+        <li>IEEE, <em>IEEE Std 802.11ac-2013</em> (VHT).</li>
+        <li>IEEE, <em>IEEE Std 802.11ax-2021</em> (HE WLAN).</li>
+    </ol>
+</section>
+
+<!-- ============================== -->
+<!-- SLIDE 31: PREGUNTAS            -->
+<!-- ============================== -->
+<section class="end-slide" data-transition="fade">
+    <div style="margin-top: 2em;">
+        <h2 style="color: var(--c-navy);">Preguntas</h2>
+        <div class="bar" style="width:80px; height:4px; background:var(--c-accent); margin:0.8em auto; border-radius:2px;"></div>
+        <p style="color:var(--c-muted); font-size:0.85em; margin-top:1em;">Santiago Hurtado &middot; Camila Puin &middot; Daniel Espitia</p>
+        <p style="color:var(--c-muted); font-size:0.72em;">UPTC &middot; Ingeniería de Sistemas &middot; Comunicaciones &middot; 2026</p>
+    </div>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        showSlideNumber: 'all',
+        controls: true,
+        controlsTutorial: false,
+        progress: true,
+        center: false,
+        transition: 'slide',
+        transitionSpeed: 'default',
+        width: 1280,
+        height: 720,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0,
+        overview: true,
+        keyboard: true,
+        touch: true,
+        help: true
+    });
+</script>
+</body>
+</html>
